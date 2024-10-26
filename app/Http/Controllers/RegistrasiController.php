@@ -41,11 +41,14 @@ class RegistrasiController extends Controller
             'category' => 'required',
         ]);
 
-        registrasi::create($request->all());
+        $registrasi = Registrasi::create($request->all());
 
-        return redirect()->route('registrasi.index')
-            ->with('success', 'Registrasi berhasil ditambahkan.');
+        return response()->json([
+            'message' => 'Registrasi berhasil ditambahkan.',
+            'data' => $registrasi,
+        ], 201); // Status 201 untuk Created
     }
+
 
     /**
      * Display the specified resource.
@@ -66,7 +69,7 @@ class RegistrasiController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, registrasi $registrasi)
+    public function update(Request $request, Registrasi $registrasi)
     {
         $request->validate([
             'participant_name' => 'required',
@@ -78,18 +81,22 @@ class RegistrasiController extends Controller
 
         $registrasi->update($request->all());
 
-        return redirect()->route('api.index')
-            ->with('success', 'Registrasi berhasil diperbarui.');
+        return response()->json([
+            'message' => 'Registrasi berhasil diperbarui.',
+            'data' => $registrasi,
+        ], 200); // Status 200 untuk OK
     }
+
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(registrasi $registrasi)
+    public function destroy(Registrasi $registrasi)
     {
         $registrasi->delete();
 
-        return redirect()->route('registrasi.index')
-            ->with('success', 'Registrasi berhasil dihapus.');
+        return response()->json([
+            'message' => 'Registrasi berhasil dihapus.',
+        ], 204); // Status 204 untuk No Content
     }
 }
